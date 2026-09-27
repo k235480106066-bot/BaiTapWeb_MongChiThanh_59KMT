@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Bài tập Lập trình Web - Website 1</title>
+</head>
+<body>
+    <h1>Website 1 - Gọi API từ Node-RED</h1>
+    <p>Sinh viên: Mông Chí Thành - 59KMT (k235480106066)</p>
+    <p>Domain đang chạy: <strong>thanh59kmt.click</strong></p>
+    
+    <hr>
+    
+    <h3>Kết quả gọi API:</h3>
+    <div id="ket-qua">Đang tải dữ liệu...</div>
+    <ul id="dssv-list"></ul>
+
+    <script>
+        fetch('/api/tacke')
+            .then(response => response.json())
+            .then(data => {
+                const ketQuaDiv = document.getElementById('ket-qua');
+                ketQuaDiv.innerHTML = `<span style="color: green; font-weight: bold;">Trạng thái: ${data.msg}</span>`;
+                
+                const ul = document.getElementById('dssv-list');
+                data.dssv.forEach(sv => {
+                    const li = document.createElement('li');
+                    li.textContent = `Tên: ${sv.name} - Tiền: ${sv.money}`;
+                    ul.appendChild(li);
+                });
+            })
+            .catch(error => {
+                document.getElementById('ket-qua').innerHTML = `<span style="color: red;">Lỗi gọi API!</span>`;
+                console.error('Lỗi:', error);
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "81:81"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./html:/usr/share/nginx/html
+    depends_on:
+      - nodered
+
+  nodered:
+    image: nodered/node-red:latest
+    ports:
+      - "1880:1880"
+
+  mariadb:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: db_name
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mariadb
+    ports:
+      - "8080:80"
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=eyJhIjoiZGJhYzNiNDkzM2RkYTA4N2YxN2U0OTljN2E2MjgxYWQiLCJ0IjoiN2VjZWY0YTQtOGE1NC00N2M5LThhYWItMzdlMDE3ODM1YjhhIiwicyI6Ik5qTmxNelF5TWprdE9HWXlNeTAwTTJWbExUbGtZelV0WkRoa05tUXdPVFZtWVdZMyJ9
