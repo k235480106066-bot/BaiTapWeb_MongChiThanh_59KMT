@@ -1,0 +1,103 @@
+[
+    {
+        "id": "49c5be81f1b125eb",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "95ac9ba46f3c4b0e",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "mariadb",
+        "port": "3306",
+        "db": "db_name",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "07f18bf59f65496d",
+        "type": "http in",
+        "z": "49c5be81f1b125eb",
+        "name": "",
+        "url": "/login",
+        "method": "get",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 80,
+        "y": 220,
+        "wires": [
+            [
+                "c20e8955a6abef55"
+            ]
+        ]
+    },
+    {
+        "id": "5be2315af548c47f",
+        "type": "http response",
+        "z": "49c5be81f1b125eb",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 750,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "c20e8955a6abef55",
+        "type": "function",
+        "z": "49c5be81f1b125eb",
+        "name": "function 1",
+        "func": "msg.topic = \"SELECT * FROM users WHERE uid='\" + msg.payload.uid + \"' AND pwd='\" + msg.payload.pwd + \"'\"; return msg;).",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 2,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 260,
+        "y": 220,
+        "wires": [
+            [
+                "6e09b64743a4e399"
+            ]
+        ]
+    },
+    {
+        "id": "6e09b64743a4e399",
+        "type": "mysql",
+        "z": "49c5be81f1b125eb",
+        "mydb": "95ac9ba46f3c4b0e",
+        "name": "",
+        "x": 440,
+        "y": 220,
+        "wires": [
+            [
+                "f2a90fe8dd9481be"
+            ]
+        ]
+    },
+    {
+        "id": "f2a90fe8dd9481be",
+        "type": "function",
+        "z": "49c5be81f1b125eb",
+        "name": "function 2",
+        "func": "msg.payload = { success: true }; nếu sai thì { success: false }.",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 8,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 220,
+        "wires": [
+            [
+                "5be2315af548c47f"
+            ]
+        ]
+    }
+]
